@@ -45,12 +45,18 @@ const RenderMap = () => {
       {responseData ? (
         <Map
           height={306}
-          defaultCenter={[responseData[0].longitude, responseData[0].latitude]}
+          defaultCenter={[
+            responseData[0].latitude ?? 0,
+            responseData[0].longitude ?? 0,
+          ]}
           defaultZoom={5}
         >
           <Marker
             width={70}
-            anchor={[responseData[0].longitude, responseData[0].latitude]}
+            anchor={[
+              responseData[0].latitude ?? 0,
+              responseData[0].longitude ?? 0,
+            ]}
           />
         </Map>
       ) : (
