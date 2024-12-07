@@ -12,6 +12,7 @@ import Star from '@mui/icons-material/Star';
 import { CustomButton } from '../components';
 import LocationComponent from 'components/renderMap';
 import RenderMap from 'components/renderMap';
+import LoadingSvg from 'components/loadingSvg';
 
 function checkImage(url: any) {
   const img = new Image();
@@ -33,7 +34,7 @@ const PropertyDetails = () => {
   const propertyDetails = data?.data ?? {};
 
   if (isLoading) {
-    return <div>Loading...</div>;
+    return <LoadingSvg />;
   }
 
   if (isError) {

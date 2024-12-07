@@ -1,16 +1,16 @@
-import Box from '@mui/material/Box';
-import Typography from '@mui/material/Typography';
-import FormControl from '@mui/material/FormControl';
-import FormHelperText from '@mui/material/FormHelperText';
-import TextField from '@mui/material/TextField';
-import TextareaAutosize from '@mui/material/TextareaAutosize';
-import Stack from '@mui/material/Stack';
-import Select from '@mui/material/Select';
-import MenuItem from '@mui/material/MenuItem';
-import Button from '@mui/material/Button';
+import Box from "@mui/material/Box";
+import Typography from "@mui/material/Typography";
+import FormControl from "@mui/material/FormControl";
+import FormHelperText from "@mui/material/FormHelperText";
+import TextField from "@mui/material/TextField";
+import TextareaAutosize from "@mui/material/TextareaAutosize";
+import Stack from "@mui/material/Stack";
+import Select from "@mui/material/Select";
+import MenuItem from "@mui/material/MenuItem";
+import Button from "@mui/material/Button";
 
-import { FormProps } from 'interfaces/common';
-import CustomButton from './CustomButton';
+import { FormProps } from "interfaces/common";
+import CustomButton from "./CustomButton";
 
 const Form = ({
   type,
@@ -30,11 +30,11 @@ const Form = ({
       <Box mt={2.5} borderRadius="15px" padding="20px" bgcolor="#fcfcfc">
         <form
           style={{
-            marginTop: '20px',
-            width: '100%',
-            display: 'flex',
-            flexDirection: 'column',
-            gap: '20px',
+            marginTop: "20px",
+            width: "100%",
+            display: "flex",
+            flexDirection: "column",
+            gap: "20px",
           }}
           onSubmit={handleSubmit(onFinishHandler)}
         >
@@ -42,9 +42,9 @@ const Form = ({
             <FormHelperText
               sx={{
                 fontWeight: 500,
-                margin: '10px 0',
+                margin: "10px 0",
                 fontSize: 16,
-                color: '#11142d',
+                color: "#11142d",
               }}
             >
               Enter property name
@@ -56,19 +56,19 @@ const Form = ({
               color="info"
               variant="outlined"
               style={{
-                borderRadius: '8px',
-                background: '#eaeff4',
+                borderRadius: "8px",
+                background: "#eaeff4",
               }}
-              {...register('title', { required: true })}
+              {...register("title", { required: true })}
             />
           </FormControl>
           <FormControl>
             <FormHelperText
               sx={{
                 fontWeight: 500,
-                margin: '10px 0',
+                margin: "10px 0",
                 fontSize: 16,
-                color: '#11142d',
+                color: "#11142d",
               }}
             >
               Enter Description
@@ -79,16 +79,16 @@ const Form = ({
               placeholder="Write description"
               color="info"
               style={{
-                width: '100%',
+                width: "100%",
                 // background: 'transparent',
-                fontSize: '16px',
-                borderColor: 'rgba(0,0,0,0.23)',
+                fontSize: "16px",
+                borderColor: "rgba(0,0,0,0.23)",
                 borderRadius: 6,
                 padding: 10,
-                color: '#919191',
-                background: '#eaeff4',
+                color: "#919191",
+                background: "#eaeff4",
               }}
-              {...register('description', { required: true })}
+              {...register("description", { required: true })}
             />
           </FormControl>
 
@@ -97,9 +97,9 @@ const Form = ({
               <FormHelperText
                 sx={{
                   fontWeight: 500,
-                  margin: '10px 0',
+                  margin: "10px 0",
                   fontSize: 16,
-                  color: '#11142d',
+                  color: "#11142d",
                 }}
               >
                 Select Property Type
@@ -109,10 +109,10 @@ const Form = ({
                 color="info"
                 displayEmpty
                 required
-                inputProps={{ 'aria-label': 'Without label' }}
+                inputProps={{ "aria-label": "Without label" }}
                 defaultValue="apartment"
-                style={{ background: '#eaeff4' }}
-                {...register('propertyType', {
+                style={{ background: "#eaeff4" }}
+                {...register("propertyType", {
                   required: true,
                 })}
               >
@@ -124,15 +124,17 @@ const Form = ({
                 <MenuItem value="duplex">Duplex</MenuItem>
                 <MenuItem value="studio">Studio</MenuItem>
                 <MenuItem value="chalet">Chalet</MenuItem>
+                <MenuItem value="chalet">2 Bedroom</MenuItem>
+                <MenuItem value="chalet">3 Bedroom</MenuItem>
               </Select>
             </FormControl>
             <FormControl>
               <FormHelperText
                 sx={{
                   fontWeight: 500,
-                  margin: '10px 0',
+                  margin: "10px 0",
                   fontSize: 16,
-                  color: '#11142d',
+                  color: "#11142d",
                 }}
               >
                 Enter property price
@@ -145,9 +147,9 @@ const Form = ({
                 type="number"
                 variant="outlined"
                 style={{
-                  background: '#eaeff4',
+                  background: "#eaeff4",
                 }}
-                {...register('price', { required: true })}
+                {...register("price", { required: true })}
               />
             </FormControl>
           </Stack>
@@ -156,9 +158,9 @@ const Form = ({
             <FormHelperText
               sx={{
                 fontWeight: 500,
-                margin: '10px 0',
+                margin: "10px 0",
                 fontSize: 16,
-                color: '#11142d',
+                color: "#11142d",
               }}
             >
               Enter Location
@@ -170,8 +172,8 @@ const Form = ({
               color="info"
               variant="outlined"
               placeholder="city,state,country"
-              style={{ background: '#eaeff4' }}
-              {...register('location', { required: true })}
+              style={{ background: "#eaeff4" }}
+              {...register("location", { required: true })}
             />
           </FormControl>
 
@@ -189,9 +191,9 @@ const Form = ({
               <Button
                 component="label"
                 sx={{
-                  width: 'fit-content',
-                  color: '#2ed480',
-                  textTransform: 'capitalize',
+                  width: "fit-content",
+                  color: "#2ed480",
+                  textTransform: "capitalize",
                   fontSize: 16,
                 }}
               >
@@ -209,7 +211,7 @@ const Form = ({
             <Typography
               fontSize={14}
               color="#808191"
-              sx={{ wordBreak: 'break-all' }}
+              sx={{ wordBreak: "break-all" }}
             >
               {propertyImage?.name}
             </Typography>
@@ -217,7 +219,7 @@ const Form = ({
 
           <CustomButton
             type="submit"
-            title={formLoading ? 'Submitting...' : 'Submit'}
+            title={formLoading ? "Submitting..." : "Submit"}
             backgroundColor="#475be8"
             color="#fcfcfc"
           />

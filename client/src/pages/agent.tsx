@@ -1,15 +1,16 @@
-import { useList } from '@refinedev/core';
-import Box from '@mui/material/Box';
-import Typography from '@mui/material/Typography';
+import { useList } from "@refinedev/core";
+import Box from "@mui/material/Box";
+import Typography from "@mui/material/Typography";
 
-import { AgentCard } from '../components';
+import { AgentCard } from "../components";
+import LoadingSvg from "components/loadingSvg";
 
 const Agents = () => {
-  const { data, isLoading, isError } = useList({ resource: 'users' });
+  const { data, isLoading, isError } = useList({ resource: "users" });
 
   const allAgents = data?.data ?? [];
 
-  if (isLoading) return <div>loading...</div>;
+  if (isLoading) return <LoadingSvg />;
   if (isError) return <div>error...</div>;
 
   return (
@@ -21,10 +22,10 @@ const Agents = () => {
       <Box
         mt="20px"
         sx={{
-          display: 'flex',
-          flexWrap: 'wrap',
-          gap: '20px',
-          backgroundColor: '#fcfcfc',
+          display: "flex",
+          flexWrap: "wrap",
+          gap: "20px",
+          backgroundColor: "#fcfcfc",
         }}
       >
         {allAgents.map((agent) => (

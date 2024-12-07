@@ -1,13 +1,14 @@
-import { useOne } from '@refinedev/core';
-import { useParams } from 'react-router-dom';
+import { useOne } from "@refinedev/core";
+import { useParams } from "react-router-dom";
 
-import { Profile } from '../components';
+import { Profile } from "../components";
+import LoadingSvg from "components/loadingSvg";
 
 const AgentProfile = () => {
   const { id } = useParams();
 
   const { data, isLoading, isError } = useOne({
-    resource: 'users',
+    resource: "users",
     id: id as string,
   });
 
@@ -15,7 +16,7 @@ const AgentProfile = () => {
 
   const myProfile = data?.data ?? [];
 
-  if (isLoading) return <div>loading...</div>;
+  if (isLoading) return <LoadingSvg />;
   if (isError) return <div>error...</div>;
 
   return (

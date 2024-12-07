@@ -1,19 +1,20 @@
-import { useGetIdentity, useOne } from '@refinedev/core';
+import { useGetIdentity, useOne } from "@refinedev/core";
 
-import { Profile } from '../components';
+import { Profile } from "../components";
+import LoadingSvg from "components/loadingSvg";
 
 const MyProfile = () => {
   const { data: user } = useGetIdentity({
     v3LegacyAuthProviderCompatible: true,
   });
   const { data, isLoading, isError } = useOne({
-    resource: 'users',
+    resource: "users",
     id: user?.userid,
   });
 
   const myProfile = data?.data ?? [];
 
-  if (isLoading) return <div>loading...</div>;
+  if (isLoading) return <LoadingSvg />;
   if (isError) return <div>error...</div>;
 
   return (

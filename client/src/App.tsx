@@ -1,36 +1,36 @@
-import React from 'react';
+import React from "react";
 
-import { redirect, useRoutes } from 'react-router-dom';
+import { redirect, useRoutes } from "react-router-dom";
 
 import {
   GitHubBanner,
   Refine,
   LegacyAuthProvider as AuthProvider,
-} from '@refinedev/core';
+} from "@refinedev/core";
 import {
   notificationProvider,
   RefineSnackbarProvider,
   ReadyPage,
   ErrorComponent,
-} from '@refinedev/mui';
+} from "@refinedev/mui";
 
-import { NotificationProvider } from '@refinedev/core';
+import { NotificationProvider } from "@refinedev/core";
 
-import CssBaseline from '@mui/material/CssBaseline';
-import GlobalStyles from '@mui/material/GlobalStyles';
-import AccountCircleOutlined from '@mui/icons-material/AccountCircleOutlined';
-import ChatBubbleOutline from '@mui/icons-material/ChatBubbleOutline';
-import PeopleAltOutlined from '@mui/icons-material/PeopleAltOutlined';
-import StarOutlineRounded from '@mui/icons-material/StarOutlineRounded';
-import VillaOutlined from '@mui/icons-material/VillaOutlined';
+import CssBaseline from "@mui/material/CssBaseline";
+import GlobalStyles from "@mui/material/GlobalStyles";
+import AccountCircleOutlined from "@mui/icons-material/AccountCircleOutlined";
+import ChatBubbleOutline from "@mui/icons-material/ChatBubbleOutline";
+import PeopleAltOutlined from "@mui/icons-material/PeopleAltOutlined";
+import StarOutlineRounded from "@mui/icons-material/StarOutlineRounded";
+import VillaOutlined from "@mui/icons-material/VillaOutlined";
 
-import dataProvider from '@refinedev/simple-rest';
-import routerProvider from '@refinedev/react-router-v6/legacy';
-import axios, { AxiosRequestConfig } from 'axios';
-import { Title, Sider, Layout, Header } from './components/layout';
-import { ColorModeContext, ColorModeContextProvider } from './contexts';
-import { CredentialResponse } from './interfaces/google';
-import { parseJwt } from './utils/parse-jwt';
+import dataProvider from "@refinedev/simple-rest";
+import routerProvider from "@refinedev/react-router-v6/legacy";
+import axios, { AxiosRequestConfig } from "axios";
+import { Title, Sider, Layout, Header } from "./components/layout";
+import { ColorModeContext, ColorModeContextProvider } from "./contexts";
+import { CredentialResponse } from "./interfaces/google";
+import { parseJwt } from "./utils/parse-jwt";
 
 import {
   Login,
@@ -42,14 +42,16 @@ import {
   CreateProperty,
   AgentProfile,
   EditProperty,
-} from './pages';
-import { Box, PaletteMode, ThemeProvider, createTheme } from '@mui/material';
+} from "./pages";
+import { Box, PaletteMode, ThemeProvider, createTheme } from "@mui/material";
+import Message from "pages/message";
+import RentedProperties from "pages/rentedProperties";
 
 const axiosInstance = axios.create();
 axiosInstance.interceptors.request.use((request: AxiosRequestConfig) => {
-  const token = localStorage.getItem('token');
+  const token = localStorage.getItem("token");
   if (request.headers) {
-    request.headers['Authorization'] = `Bearer ${token}`;
+    request.headers["Authorization"] = `Bearer ${token}`;
   } else {
     request.headers = {
       Authorization: `Bearer ${token}`,
@@ -69,10 +71,11 @@ function App() {
       // Save user to MongoDB
       if (profileObj) {
         const response = await fetch(
-          'https://obadeatrack.onrender.com/api/v1/users',
+          "https://obadeatrack.onrender.com/api/v1/users",
+          // "http://localhost:8080/api/v1/users",
           {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
             body: JSON.stringify({
               name: profileObj.name,
               email: profileObj.email,
@@ -85,7 +88,7 @@ function App() {
 
         if (response.status === 200) {
           localStorage.setItem(
-            'user',
+            "user",
             JSON.stringify({
               ...profileObj,
               avatar: profileObj.picture,
@@ -96,32 +99,32 @@ function App() {
           return Promise.reject();
         }
       }
-      localStorage.setItem('token', `${credential}`);
+      localStorage.setItem("token", `${credential}`);
 
-      return Promise.resolve('/').then((url) => {
+      return Promise.resolve("/").then((url) => {
         window.location.href = url;
       });
     },
     logout: () => {
-      const token = localStorage.getItem('token');
+      const token = localStorage.getItem("token");
 
-      if (token && typeof window !== 'undefined') {
-        localStorage.removeItem('token');
-        localStorage.removeItem('user');
+      if (token && typeof window !== "undefined") {
+        localStorage.removeItem("token");
+        localStorage.removeItem("user");
         axios.defaults.headers.common = {};
         window.google?.accounts.id.revoke(token, () => {
           return Promise.resolve();
         });
       }
 
-      return Promise.resolve('/pages/login').then((url) => {
+      return Promise.resolve("/pages/login").then((url) => {
         window.location.href = url;
       });
     },
 
     checkError: () => Promise.resolve(),
     checkAuth: async () => {
-      const token = localStorage.getItem('token');
+      const token = localStorage.getItem("token");
 
       if (token) {
         return Promise.resolve();
@@ -131,7 +134,7 @@ function App() {
 
     getPermissions: async () => null,
     getUserIdentity: async () => {
-      const user = localStorage.getItem('user');
+      const user = localStorage.getItem("user");
       if (user) {
         return Promise.resolve(JSON.parse(user));
       }
@@ -140,15 +143,15 @@ function App() {
 
   const theme = createTheme({
     palette: {
-      mode: 'light',
+      mode: "light",
       primary: {
-        main: '#9c27b0',
+        main: "#9c27b0",
       },
       secondary: {
-        main: '#f44336',
+        main: "#f44336",
       },
       background: {
-        default: '#e8eaf6',
+        default: "#e8eaf6",
       },
     },
   });
@@ -160,18 +163,21 @@ function App() {
         <CssBaseline />
         <GlobalStyles
           styles={{
-            html: { WebkitFontSmoothing: 'auto' },
+            html: { WebkitFontSmoothing: "auto" },
           }}
         />
         <RefineSnackbarProvider>
           <Refine
-            dataProvider={dataProvider('https://obadeatrack.onrender.com/api/v1')}
+            dataProvider={dataProvider(
+              // "http://localhost:8080/api/v1"
+              "https://obadeatrack.onrender.com/api/v1"
+            )}
             notificationProvider={notificationProvider}
             ReadyPage={ReadyPage}
             catchAll={<ErrorComponent />}
             resources={[
               {
-                name: 'properties',
+                name: "properties",
                 list: AllProperties,
                 show: PropertyDetails,
                 create: CreateProperty,
@@ -179,24 +185,24 @@ function App() {
                 icon: <VillaOutlined />,
               },
               {
-                name: 'agents',
+                name: "agents",
                 list: Agents,
                 show: AgentProfile,
                 icon: <PeopleAltOutlined />,
               },
               {
-                name: 'reviews',
-                list: Home,
+                name: "reviews",
+                list: RentedProperties,
                 icon: <StarOutlineRounded />,
               },
               {
-                name: 'messages',
-                list: Home,
+                name: "messages",
+                list: Message,
                 icon: <ChatBubbleOutline />,
               },
               {
-                name: 'my-profile',
-                options: { label: 'My Profile ' },
+                name: "my-profile",
+                options: { label: "My Profile " },
                 list: MyProfile,
                 icon: <AccountCircleOutlined />,
               },
