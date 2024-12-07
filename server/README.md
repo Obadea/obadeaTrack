@@ -1,56 +1,78 @@
-<div align="center" style="margin: 30px;">
-<a href="https://refine.dev/">
-  <img alt="refine logo" src="https://refine.ams3.cdn.digitaloceanspaces.com/readme/refine-readme-banner.png">
-</a>
-<br />
-<br />
+## Server (Backend) README
 
-<div align="center">
-    <a href="https://refine.dev">Home Page</a> |
-    <a href="https://discord.gg/refine">Discord</a> |
-    <a href="https://refine.dev/examples/">Examples</a> | 
-    <a href="https://refine.dev/blog/">Blog</a> | 
-    <a href="https://refine.dev/docs/">Documentation</a>
-</div>
-</div>
+### Overview
 
-<br />
+The backend of this project serves as the API provider for the client. It manages user data, messages, and application state through a RESTful architecture.
 
-<div align="center"><strong>Build your <a href="https://reactjs.org/">React</a>-based CRUD applications, without constraints.</strong><br>An open source, headless web application framework developed with flexibility in mind.
+### Features
 
-<br />
-<br />
+- User authentication and management.
+- RESTful API for managing messages and users.
+- Real-time communication support (if applicable).
+- Data validation and error handling.
 
-[![Discord](https://img.shields.io/discord/837692625737613362.svg?label=&logo=discord&logoColor=ffffff&color=7389D8&labelColor=6A7EC2)](https://discord.gg/refine)
-[![Twitter Follow](https://img.shields.io/twitter/follow/refine_dev?style=social)](https://twitter.com/refine_dev)
+### Technologies Used
 
-<a href="https://www.producthunt.com/posts/refine-3?utm_source=badge-top-post-badge&utm_medium=badge&utm_souce=badge-refine&#0045;3" target="_blank"><img src="https://api.producthunt.com/widgets/embed-image/v1/top-post-badge.svg?post_id=362220&theme=light&period=daily" alt="refine - 100&#0037;&#0032;open&#0032;source&#0032;React&#0032;framework&#0032;to&#0032;build&#0032;web&#0032;apps&#0032;3x&#0032;faster | Product Hunt" style="width: 250px; height: 54px;" width="250" height="54" /></a>
+- **Node.js**: Backend runtime.
+- **Express**: Lightweight framework for API development.
+- **MongoDB**: NoSQL database for storing messages and user data.
+- **Mongoose**: For database modeling and interaction.
+- **cloudinary**: For stroing images and media related.
 
-</div>
+### Installation and Setup
 
-# Full Stack MERN Dashboard App Using Refine - Server App
+1. Clone the repository:
 
-![app_cover](https://user-images.githubusercontent.com/18739364/218060605-19c3e8cd-75e9-4afd-a796-d4801237c0fe.png)
+   ```bash
+   git clone https://github.com/Obadea/obadeaTrack.git
+   cd obadeaTrack/server
+   ```
 
-[Refer to the client app source code](https://github.com/refinedev/refine/tree/master/examples/mern-dashboard-client)
+2. Install dependencies:
 
-With modern material design, a fully functional dashboard, a property management page, and a users page - both connected to our database and a profile page that connects the two, this video is the updated full-stack MERN course you’ve all been waiting for.
+   ```bash
+   npm install
+   ```
 
-Alongside building this application, you'll learn how to use the most in-demand technologies today:
+3. Create a `.env` file with the following environment variables:
 
-1. Node.js, Express.js, MongoDB, and React.js that together form the powerful MERN stack
-2. Material UI: The most popular UI Component Kit nowadays
-3. TypeScript: Yep, you heard that right; we’ll be using TypeScript on this project! No previous typescript knowledge is required
-4. You’ll learn how to transform a Figma design into a fully functioning website
-5. You’ll also learn how to optimize images and store them on the cloud using Cloudinary
-6. Provide a quick and easy way for your users to log in and register using Google \*\*\*\*Auth
-7. And most importantly, you’ll learn how to build React-based CRUD applications incredibly quickly using refine.
+   ```env
+   MONGODB_URL = mongodb+srv://obadeagbenga:obadeatrack1@cluster0.o36h516.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0
+   CLOUDINARY_CLOUD_NAME = dzonkzh00
+   CLOUDINARY_API_KEY = 575769596632566
+   CLOUDINARY_API_SECRET = 0zmf89O4Yautt1_cWHBfdwqRjOw
+   ```
 
-Developed by [@adrianhajdin](https://github.com/adrianhajdin) ([JavaScript Mastery](https://www.youtube.com/@javascriptmastery)).
-Launch your development career with project-based coaching - [JS Mastery Pro](https://www.jsmastery.pro)
+4. Start the server:
 
-## Try this example on your local
+   ```bash
+   npm run start
+   ```
 
-```bash
-npm create refine-app@latest -- --example mern-dashboard-server
+5. The server will be available at `http://localhost:8080` by default.
+   For the deployed version the server is avaible at `https://obadeatrack.onrender.com`
+
+   E.g**For Users**: https://obadeatrack.onrender.com/api/v1/users
+
+### Folder Structure
+
 ```
+server/
+├── controllers/       # API logic and controllers
+├── models/            # Mongoose models
+├── routes/            # Route definitions
+├── config/            # Configuration files (e.g., database setup)
+├── index.js             # Application entry point
+├── package.json       # Project metadata and dependencies
+└── README.md          # Server-specific README
+```
+
+### API Endpoints
+
+#### Authentication
+
+- **POST /api/v1/users**: Register a new user.
+- **GET /api/v1/properties**:Get all properties.
+- **GET /api/v1/savedProperties**:Get saved properties.
+
+---
