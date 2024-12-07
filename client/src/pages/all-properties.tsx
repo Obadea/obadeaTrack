@@ -1,15 +1,16 @@
-import Add from '@mui/icons-material/Add';
-import { useTable } from '@refinedev/core';
-import Box from '@mui/material/Box';
-import Stack from '@mui/material/Stack';
-import Typography from '@mui/material/Typography';
-import TextField from '@mui/material/TextField';
-import Select from '@mui/material/Select';
-import MenuItem from '@mui/material/MenuItem';
-import { useNavigate } from 'react-router-dom';
-import { useMemo } from 'react';
+import Add from "@mui/icons-material/Add";
+import { useGetIdentity, useOne, useTable } from "@refinedev/core";
+import Box from "@mui/material/Box";
+import Stack from "@mui/material/Stack";
+import Typography from "@mui/material/Typography";
+import TextField from "@mui/material/TextField";
+import Select from "@mui/material/Select";
+import MenuItem from "@mui/material/MenuItem";
+import { useNavigate } from "react-router-dom";
+import { useEffect, useMemo, useState } from "react";
 
-import { PropertyCard, CustomButton } from '../components';
+import { PropertyCard, CustomButton } from "../components";
+import LoadingSvg from "components/loadingSvg";
 
 const AllProperties = () => {
   const navigate = useNavigate();
@@ -28,36 +29,59 @@ const AllProperties = () => {
 
   const allProperties = data?.data ?? [];
 
-  const currentPrice = sorter.find((item) => item.field === 'price')?.order;
+  const [savedPropertiesId, setSavedPropertiesId] = useState();
+
+  const currentPrice = sorter.find((item) => item.field === "price")?.order;
 
   const toggleSort = (field: string) => {
-    setSorter([{ field, order: currentPrice === 'asc' ? 'desc' : 'asc' }]);
+    setSorter([{ field, order: currentPrice === "asc" ? "desc" : "asc" }]);
   };
 
   const currentFilterValues = useMemo(() => {
     const logicalFilters = filters.flatMap((item) =>
-      'field' in item ? item : []
+      "field" in item ? item : []
     );
 
     return {
-      title: logicalFilters.find((item) => item.field === 'title')?.value || '',
+      title: logicalFilters.find((item) => item.field === "title")?.value || "",
       propertyType:
-        logicalFilters.find((item) => item.field === 'propertyType')?.value ||
-        '',
+        logicalFilters.find((item) => item.field === "propertyType")?.value ||
+        "",
     };
   }, [filters]);
 
-  if (isLoading) return <Typography>Loading...</Typography>;
+  const { data: user } = useGetIdentity({
+    v3LegacyAuthProviderCompatible: true,
+  });
+  const {
+    data: UserData,
+    isLoading: UserDataIsLoading,
+    isError: UserDataError,
+  } = useOne({
+    resource: "users",
+    id: user?.userid,
+  });
+
+  const myProfile = UserData?.data ?? [];
+
+  useEffect(() => {
+    if (!UserDataIsLoading) {
+      const idOnly = myProfile?.savedProperties?.map((item: any) => item?._id);
+      setSavedPropertiesId(idOnly);
+    }
+  }, [UserDataIsLoading]);
+
+  if (isLoading && UserDataIsLoading) return <LoadingSvg />;
   if (isError) return <Typography>Error...</Typography>;
 
   return (
     <Box>
-      <Box mt="20px" sx={{ display: 'flex', flexWrap: 'wrap', gap: 3 }}>
+      <Box mt="20px" sx={{ display: "flex", flexWrap: "wrap", gap: 3 }}>
         <Stack direction="column" width="100%">
           <Typography fontSize={25} fontWeight={700} color="#11142d">
             {!allProperties.length
-              ? 'There are no properties'
-              : 'All Properties'}
+              ? "There are no properties"
+              : "All Properties"}
           </Typography>
           <Box
             mb={2}
@@ -71,11 +95,11 @@ const AllProperties = () => {
               display="flex"
               gap={2}
               flexWrap="wrap"
-              mb={{ xs: '20px', sm: 0 }}
+              mb={{ xs: "20px", sm: 0 }}
             >
               <CustomButton
-                title={`Sort price ${currentPrice === 'asc' ? '↑' : '↓'}`}
-                handleClick={() => toggleSort('price')}
+                title={`Sort price ${currentPrice === "asc" ? "↑" : "↓"}`}
+                handleClick={() => toggleSort("price")}
                 backgroundColor="#475be8"
                 color="#fcfcfc"
               />
@@ -87,8 +111,8 @@ const AllProperties = () => {
                 onChange={(e) => {
                   setFilters([
                     {
-                      field: 'title',
-                      operator: 'contains',
+                      field: "title",
+                      operator: "contains",
                       value: e.currentTarget.value
                         ? e.currentTarget.value
                         : undefined,
@@ -101,32 +125,36 @@ const AllProperties = () => {
                 color="info"
                 displayEmpty
                 required
-                inputProps={{ 'aria-label': 'Without label' }}
+                inputProps={{ "aria-label": "Without label" }}
                 defaultValue=""
                 value={currentFilterValues.propertyType}
                 onChange={(e) => {
                   setFilters(
                     [
                       {
-                        field: 'propertyType',
-                        operator: 'eq',
+                        field: "propertyType",
+                        operator: "eq",
                         value: e.target.value,
                       },
                     ],
-                    'replace'
+                    "replace"
                   );
                 }}
               >
-                <MenuItem value="">All</MenuItem>
+                <MenuItem value="" sx={{ width: "200px" }}>
+                  All
+                </MenuItem>
                 {[
-                  'Apartment',
-                  'Villa',
-                  'Farmhouse',
-                  'Condos',
-                  'Townhouse',
-                  'Duplex',
-                  'Studio',
-                  'Chalet',
+                  "Apartment",
+                  "Villa",
+                  "Farmhouse",
+                  "Condos",
+                  "Townhouse",
+                  "Duplex",
+                  "Studio",
+                  "Chalet",
+                  "2 Bedroom",
+                  "3 Bedroom",
                 ].map((type) => (
                   <MenuItem key={type} value={type.toLowerCase()}>
                     {type}
@@ -141,15 +169,15 @@ const AllProperties = () => {
       <Stack direction="row" justifyContent="space-between" alignItems="center">
         <CustomButton
           title="Add Property"
-          handleClick={() => navigate('/properties/create')}
+          handleClick={() => navigate("/properties/create")}
           backgroundColor="#475be8"
           color="#fcfcfc"
           icon={<Add />}
         />
       </Stack>
 
-      <Box mt="20px" sx={{ display: 'flex', flexWrap: 'wrap', gap: 3 }}>
-        {allProperties?.map((property) => (
+      <Box mt="20px" sx={{ display: "flex", flexWrap: "wrap", gap: 3 }}>
+        {allProperties?.map((property, idx) => (
           <PropertyCard
             key={property._id}
             id={property._id}
@@ -157,6 +185,7 @@ const AllProperties = () => {
             location={property.location}
             price={property.price}
             photo={property.photo}
+            savedProperty={savedPropertiesId}
           />
         ))}
       </Box>
@@ -171,11 +200,11 @@ const AllProperties = () => {
             disabled={!(current > 1)}
           />
           <Box
-            display={{ xs: 'hidden', sm: 'flex' }}
+            display={{ xs: "hidden", sm: "flex" }}
             alignItems="center"
             gap="5px"
           >
-            Page{' '}
+            Page{" "}
             <strong>
               {current} of {pageCount}
             </strong>
@@ -192,7 +221,7 @@ const AllProperties = () => {
             color="info"
             displayEmpty
             required
-            inputProps={{ 'aria-label': 'Without label' }}
+            inputProps={{ "aria-label": "Without label" }}
             defaultValue={10}
             onChange={(e) =>
               setPageSize(e.target.value ? Number(e.target.value) : 10)
